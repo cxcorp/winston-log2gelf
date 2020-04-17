@@ -13,10 +13,7 @@ class Log2gelf extends Transport {
         this.hostname = options.hostname || os.hostname();
         this.host = options.host || '127.0.0.1';
         this.port = options.port || 12201;
-        this.path = options.path;
         this.protocol = options.protocol || 'tcp';
-        this.reconnect = options.reconnect || '0';
-        this.wait = options.wait || 1000;
         this.exitOnError = options.exitOnError || false;
         this.exitDelay = options.exitDelay || 2000;
         this.service = options.service || 'nodejs';
@@ -24,8 +21,15 @@ class Log2gelf extends Transport {
         this.silent = options.silent || false;
         this.environment = options.environment || 'development';
         this.release = options.release;
-        this.protocolOptions = options.protocolOptions || {};
         this.customPayload = {};
+
+        // tcp & tls protocol options
+        this.reconnect = options.reconnect || '0';
+        this.wait = options.wait || 1000;
+        this.protocolOptions = options.protocolOptions || {};
+
+        // http & https protocol options
+        this.path = options.path;
 
         Object.keys(options).forEach((key) => {
             if (key[0] === '_') this.customPayload[key] = options[key];
